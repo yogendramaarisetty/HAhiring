@@ -42,6 +42,13 @@
     <Compile Include="HAhiring\settings.py" />
     <Compile Include="HAhiring\urls.py" />
     <Compile Include="HAhiring\wsgi.py" />
+    <Compile Include="test\admin.py" />
+    <Compile Include="test\apps.py" />
+    <Compile Include="test\migrations\__init__.py" />
+    <Compile Include="test\models.py" />
+    <Compile Include="test\tests.py" />
+    <Compile Include="test\views.py" />
+    <Compile Include="test\__init__.py" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="app\" />
@@ -54,6 +61,10 @@
     <Folder Include="app\templates\" />
     <Folder Include="app\templates\app\" />
     <Folder Include="HAhiring\" />
+    <Folder Include="test\" />
+    <Folder Include="test\migrations\" />
+    <Folder Include="test\templates\" />
+    <Folder Include="test\templates\test\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="requirements.txt" />
@@ -86,6 +97,7 @@
     <Content Include="app\templates\app\layout.html" />
     <Content Include="app\templates\app\login.html" />
     <Content Include="app\templates\app\loginpartial.html" />
+    <Content Include="test\templates\test\index.html" />
   </ItemGroup>
   <ItemGroup>
     <None Include="readme.html">

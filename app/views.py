@@ -5,6 +5,9 @@ Definition of views.
 from datetime import datetime
 from django.shortcuts import render
 from django.http import HttpRequest
+from django.http import HttpResponse
+from django.contrib.auth.models import User
+
 
 def home(request):
     """Renders the home page."""
@@ -14,6 +17,15 @@ def home(request):
         'app/index.html',
         {
             'title':'Home Page',
+            'year':datetime.now().year,
+        }
+    )
+def codeeditor(request):
+     return render(
+        request,
+        'app/codeeditor.html',
+        {
+            'title':'Code Editor',
             'year':datetime.now().year,
         }
     )
