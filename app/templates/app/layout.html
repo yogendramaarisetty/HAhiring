@@ -9,7 +9,12 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
     <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
 </head>
-
+<style>
+    .navbar-fixed-bottom {
+    bottom: 0;
+    z-index: 0;
+}
+</style>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
@@ -35,8 +40,25 @@
     <div class="container body-content">
 {% block content %}{% endblock %}
         <hr/>
-        <footer>
-            <p>&copy; {{ year }} - privacy policy</p>
+        <footer >
+         
+                <div class="navbar navbar-inverse navbar-fixed-bottom">
+                        <div class="container">
+                            <div class="navbar-header">
+                                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                                    <span class="icon-bar">&</span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                </button>
+                                <p style="color: aliceblue; right:0%; padding:2px"><br/>&copy; {{ year }} - privacy policy</p>
+                            </div>
+                            
+                        </div>
+                    </div>
+                 
+                   
+                </div>
+            </div>
         </footer>
     </div>
 
