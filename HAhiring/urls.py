@@ -15,6 +15,7 @@ urlpatterns = [
     path('contact/', views.contact, name='contact'),
     path('about/', views.about, name='about'),
     path('codeeditor/',views.codeeditor, name='codeeditor'),
+    path('compiler/',views.compiler, name='compiler'),
     path('login/',
          LoginView.as_view
          (
@@ -28,5 +29,5 @@ urlpatterns = [
          ),
          name='login'),
     path('logout/', LogoutView.as_view(next_page='/'), name='logout'),
-    path('admin/', admin.site.urls),
+    path('admin/', admin.site.urls, name='admin'),
 ]

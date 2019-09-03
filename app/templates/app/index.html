@@ -14,13 +14,22 @@
   {% if user.is_authenticated == False %}
   <h1>Please Login to take test</h1>
   {% endif %} 
+
+  {% if user.is_superuser  %}
+  <div class="col-md-4">
+          
+      <h2>Hey {{ user.username }} <br/> you are Super User </h2>
+ 
+      <p><a class="btn btn-default">Manage Users</a></p>
+  </div>
+  {% endif %} 
   
-  {% if user.is_authenticated == True %}
+  {% if user.is_authenticated == True and  user.is_superuser == False %}
     <div class="col-md-4">
             
         <h2>Hello {{ user.username }} <br/>Take Test</h2>
-  
-        <p><a class="btn btn-default" href="{% url 'codeeditor' %}">Goto Test &raquo;</a></p>
+   
+        <p><a class="btn btn-default" href="{% url 'compiler' %}">Goto Test &raquo;</a></p>
     </div>
     {% endif %} 
     <div class="col-md-4">
