@@ -7,7 +7,12 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.utils.translation import ugettext_lazy as _
 
 class codeForm(forms.Form):
-    codearea=forms.CharField(widget-forms.Textarea)
+    body = forms.CharField(label="CODE",
+            widget=forms.Textarea(attrs={'placeholder': 'Write your code here' }))
+
+
+
+
 
 class BootstrapAuthenticationForm(AuthenticationForm):
     """Authentication form which uses boostrap CSS."""
