@@ -27,7 +27,7 @@
   {% if user.is_authenticated == True and  user.is_superuser == False %}
     <div class="col-md-4">
             
-        <h2>Hello {{ user.username }} <br/>Take Test</h2>
+        <h2>{{ user.username }} <br/>Take Test</h2>
    
         <p><a class="btn btn-default" href="{% url 'test' %}">Goto Test &raquo;</a></p>
     </div>

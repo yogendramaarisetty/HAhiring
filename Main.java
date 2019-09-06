@@ -1,6 +1,6 @@
-  public class Main{
+
+public class Main{
 public static void main(String args[]){
-for(int i=0;i<3;i++)
-System.out.println("hi how are you" +"  " + i);
+    System.out.println(2+34);
 }
 }

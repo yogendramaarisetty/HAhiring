@@ -1,11 +1,20 @@
 {% extends "app/layout.html" %}
 
 {% block content %}
+<style>
+.ace-tm {
+    background-color: #FFFFFF;
+    color: black;
+    height: 300px;
+    width: 570px;
+}
+</style>
 <body>
 <div id="container">
 </div>
 
-<div class="col-md-4" style="width:50%;">
+
+<div class="col-md-4" style="width:50%;padding-top: 55px;padding-left: 0%;">
     <pre id="editor" style=" " >
         <h1>Coding Question</h1>
         <h2>Ali and Helping innocent people</h2>
@@ -26,37 +35,76 @@
    <div class="col-mod-4">
        <form id='codeform'  style="padding-top: 30px;" onsubmit="return false;">
            {% csrf_token %}
-           <textarea id='code' name="codearea"  placeholder="write your code" style="width: 200px;height:300px;"> </textarea><br/>
-           <button onclick="runCode()" class="btn-success" >SUBMIT</button>
-
+           <label>Java Code</label> 
+           <label class="switch">
+  <input type="checkbox" >
+  <span class="slider round" style="height: 25px;width: 50px;left:440px;"></span>
+</label>
+           <div  onchange id='code' name="codearea"  placeholder="write your code" style="width: 570px;height:300px;"></div><br/>
+           <button  onclick="runCode()" id='runbtn' class="btn-success" >Compile & run</button><div class="loader" style="position: relative;left: 60%;right: 20px;"></div></div>
+           
+           <label>Output</label><br/>
+        <textarea id="output" style="width: 500px;height:100px;" ></textarea>
        </form>
-       <div id='output' style="border: 1px" >
-          <div class="ajaxProgress"  contenteditable>...</div>
-       </div>
+       
 
+
+   </div>
+   </body>
+   <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
+    
         <script type="text/javascript">
 
-            function runCode(){
-            $('.ajaxProgress').show();
+       var e=ace.edit("code")
+       e.getSession().setMode("ace/mode/java");
+     
 
+       $(document).ready(function() {
+                $('.loader').hide();
+              }); 
+
+            function runCode(){
+            
+           
+            if(e.getValue()!=""){
+             $('.loader').show();
             $.ajax({
             type: 'POST',
             url: 'code1/',
-            dataType: "json",
+            dataType: 'json',
+            cache: false,
             async : true,
             data: {
             csrfmiddlewaretoken: '{{ csrf_token }}',
-            code:$('#code').val()
+            code : e.getValue()
             },
-            sucess: function(json){
-            $('#output').html(json.message);
-            $('.ajaxProgress').hide();
-             alert ("code sent successfully");
+            success: function(json){
+            $('#output').html(json.msg);
+            $('.loader').hide();
+            
             }
 
             });
             }
+            else{
+               $('#output').html("Don't submit empty code");
+            }
+            }
+        
 
+        document.addEventListener('DOMContentLoaded', function () {
+  var checkbox = document.querySelector('input[type="checkbox"]');
 
+  checkbox.addEventListener('change', function () {
+    if (checkbox.checked) {
+        e.setTheme("ace/theme/twilight")
+      console.log('Checked');
+    } else {
+      // do that
+       e.setTheme("ace/theme/xcode")
+      console.log('Not checked');
+    }
+  });
+});
         </script>
 {% endblock %}

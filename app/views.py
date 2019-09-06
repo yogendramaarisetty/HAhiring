@@ -2,10 +2,13 @@
 Definition of views.
 """
 import os
+import time
+import sys
 import subprocess
+import json
 from datetime import datetime
-
-from django.core.serializers import json
+# from django.utils import simplejson
+# from django.core.serializers import json
 from django.shortcuts import render
 from django.views.generic import TemplateView
 from django.http import HttpRequest
@@ -53,21 +56,31 @@ def test(request):
 
     })
 def code1(request):
+    codet=""
+    output=""
     print ('\n******this is code1********\n')
-    if request.method == 'POST' :
-        codet=request.POST.get("code","")
-        print(code(codet))
-        response_data={}
-        try:
-            response_data['result']="Successful"
-            response_data['message']=code
-        except:
-            response_data['result']="Oh no"
-            response_data['message']="didnt run"
-        print('recieved code is \n"',codet,'"')
-    return render(request,'app/index.html',{
+    response_data={}
+    rd={}
+    codet=request.POST.get("code","")
 
-    })
+    code(codet)
+    output=code(codet)
+
+    # time.sleep(1)
+    
+    response_data['result']=""
+    
+    response_data['message']=code(codet)
+    rd['msg']=response_data['message']
+    # time.sleep(1)
+    rd['msg']=output
+    # time.sleep(1)
+    print('recieved code is \n"',codet,'"\n and output is')
+    print(output)
+
+    # time.sleep(1)
+    # response_data['message']= code(codet)
+    return HttpResponse(json.dumps(rd), content_type="application/json")
 
 def code(code_text):
     return execute(code_text)
@@ -97,20 +110,24 @@ def execute_java(java_file, stdin):
     proc = subprocess.Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
     stdout,stderr = proc.communicate(stdin)
     stdoutstr= str(stdout,'utf-8')
+
     return stdoutstr
 
 def execute(code_text):
     cc="javac"
     out="java Main"
-
+    # print(code_text)
     input=""
-    filename_code=open('Main.java','w') #creating file
+    filename_code=open('Main.java','w+') #creating file
+    filename_code.flush()
     f1 = code_text.split("\n")
     for i in f1:
         filename_code.write(i+"\n")
+    filename_code.close()
+    time.sleep(0.7)
     compile_java(filename_code)
-    return execute_java(filename_code,input)
-
+    execute_java(filename_code,input)
+    return(execute_java(filename_code,input))
 
 def contact(request):
     """Renders the contact page."""
