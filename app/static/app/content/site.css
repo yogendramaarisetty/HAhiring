@@ -143,3 +143,17 @@ input:checked + .slider:before {
 .slider.round:before {
   border-radius: 50%;
 }
+.ace-tm {
+  background-color: #FFFFFF;
+  color: #131a46;
+  height: 300px;
+  width: 570px;
+  width: 570px;
+  height: 300px;
+  border: solid;
+  padding: 10px;
+  border-radius: 8px;
+  /* border: 1px; */
+  border-width: 1px;
+  border-color: #cccaca;
+}

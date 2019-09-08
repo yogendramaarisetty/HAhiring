@@ -56,67 +56,24 @@ def test(request):
 
     })
 def code1(request):
-    codet=""
-    output=""
     print ('\n******this is code1********\n')
     response_data={}
     rd={}
-    codet=request.POST.get("code","")
-
-    code(codet)
-    output=code(codet)
-
-    # time.sleep(1)
-    
-    response_data['result']=""
-    
+    codet=request.POST.get("code","") # recieved code
+    code(codet)      # Calling execute function
+    output=code(codet) #storing out put value of successfully executed code
+    response_data['result']="Successfull"
     response_data['message']=code(codet)
     rd['msg']=response_data['message']
-    # time.sleep(1)
     rd['msg']=output
-    # time.sleep(1)
     print('recieved code is \n"',codet,'"\n and output is')
     print(output)
-
-    # time.sleep(1)
-    # response_data['message']= code(codet)
-    return HttpResponse(json.dumps(rd), content_type="application/json")
+    return HttpResponse(json.dumps(rd), content_type="application/json")#sending json response
 
 def code(code_text):
     return execute(code_text)
 
-# def code(request):
-#         code_text=""
-#         output = ""
-#         # form = (request.POST)
-#         if request.method=='POST':
-#             code_text = request.POST['codetext']
-#             print(code_text)
-#             output =  execute(code_text)
-#
-#
-#         form  = codeForm
-#         return render(request,'app/basic.html',{
-#             'form': codeForm,
-#             'codetext': code_text,
-#             'output': output,}
-#         )
-def compile_java(java_file):
-   proc = subprocess.Popen('javac Main.java', shell=True)
-
-def execute_java(java_file, stdin):
-    #java_class,ext = os.path.splitext(java_file)
-    cmd = ['java ', 'Main']
-    proc = subprocess.Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
-    stdout,stderr = proc.communicate(stdin)
-    stdoutstr= str(stdout,'utf-8')
-
-    return stdoutstr
-
 def execute(code_text):
-    cc="javac"
-    out="java Main"
-    # print(code_text)
     input=""
     filename_code=open('Main.java','w+') #creating file
     filename_code.flush()
@@ -124,10 +81,50 @@ def execute(code_text):
     for i in f1:
         filename_code.write(i+"\n")
     filename_code.close()
-    time.sleep(0.7)
-    compile_java(filename_code)
+    time.sleep(0.5)
     execute_java(filename_code,input)
     return(execute_java(filename_code,input))
+
+def execute_java(java_file, stdin):
+    s="ERROR"
+    try:
+        subprocess.check_output('javac Main.java', shell=True)
+    except:
+        p= subprocess.Popen('javac Main.java', shell=True)
+        errlog=open('errorlog.txt','w+')
+        try:
+            subprocess.check_output('javac Main.java 2> errorlog.txt', shell=True)
+        except:
+            with open('errorlog.txt', 'r') as file:
+                data = file.read().replace('\n', '')
+            print("#####\n",data,"\n#####")
+            return data
+    proc = subprocess.Popen('javac Main.java', shell=True) #compiling my file
+    print("##################\n",proc.communicate(),"\n########################")
+
+
+    cmd = ['java ', 'Main']
+    proc = subprocess.Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
+    stdout,stderr = proc.communicate(stdin)
+    stdoutstr= str(stdout,'utf-8')
+    
+    logfile = open('logfile.txt', 'w')
+ 
+    proc1=subprocess.Popen(['java ', 'Main'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+    print("output file")
+    for line in proc1.stdout:
+        print(line)
+        sys.stdout.write(str(line,'utf-8'))
+        logfile.write(str(line,'utf-8'))
+    proc1.wait()
+    return stdoutstr
+
+
+
+
+
+
+
 
 def contact(request):
     """Renders the contact page."""
