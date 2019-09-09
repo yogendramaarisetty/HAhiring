@@ -47,18 +47,18 @@ def test(request):
 
     })
 def code1(request):
-    print ('\n******this is code1********\n')
+    # print ('\n******this is code1********\n')
    
     rd={}
-    codet=request.POST.get("code","")
-    inputraw=request.POST.get("input","") # recieved code
+    codet=request.POST.get("code","") #taking POST code
+    inputraw=request.POST.get("input","") # taking POST Input
     
-    print("input is :",inputraw)
+    # print("input is :",inputraw)
 
     output=execute(codet,inputraw) #storing out put value of successfully executed code
     rd['result']="successfull"
     rd['msg']=output
-    print('recieved code is \n"',codet,'\n and output is\n',output)
+    # print('recieved code is \n"',codet,'\n and output is\n',output)
     return HttpResponse(json.dumps(rd), content_type="application/json")#sending json response
 
 def execute(code_text,input):
@@ -67,7 +67,7 @@ def execute(code_text,input):
     filename_code.flush() #flushing file
     f1 = code_text.split("\n") #splitting code
     for i in f1:
-        filename_code.write(i)  #writing code line by line into file
+        filename_code.write(i+"\n")  #writing code line by line into file
     filename_code.close() #closing java file
     # time.sleep(0.05)                 #waiting to get the file ready
     # execute_java(filename_code,input) 
@@ -76,11 +76,11 @@ def execute(code_text,input):
 def execute_java(java_file, input1):
     s=""
     try:
-        subprocess.check_output('javac Main.java', shell=True) #compiling and checking compile output
+        subprocess.check_output('javac Main.java', shell=True) #compiling and checking compile output 
+                                                               #Note: check_output command returns exceptionif compilation fails
     except:
-        
         subprocess.Popen('javac Main.java 2> errorlog.txt', shell=True) #logging errorcommand
-        time.sleep(2) #sleep 
+        time.sleep(1) #sleep 
         f=open('errorlog.txt','r')  #writing compilation error to log file
         for i in f.readlines():   #line by line
             s+=i
@@ -88,16 +88,16 @@ def execute_java(java_file, input1):
         # print("#####\n",s,"\n#####")
         return s
     cmd = ['java ', 'Main']
-    if input == "":                                             #cheching weather input is emptyu or not
-       proc = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=STDOUT)
-       stdout,stderr = proc.communicate()
-       stdoutstr= str(stdout,'utf-8')
-       return stdoutstr
-    else :
-        print("%%%%%===",input1)
-        p = run(cmd, stdout=PIPE,input=input1, encoding='ascii') #taking input
-        print(p.stdout)
-        return p.stdout
+    # if input1 == "":                                             #cheching weather input is emptyu or not
+    #    proc = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=STDOUT) #Running java class file
+    #    stdout,stderr = proc.communicate() #taking standard output
+    #    stdoutstr= str(stdout,'utf-8')  #converting binary output to String
+    #    return stdoutstr
+    # else :
+    #     # print("%%%%%===",input1)
+    p = run(cmd, stdout=PIPE,input=input1, encoding='ascii') #passing input to run command
+    print(p.stdout)
+    return p.stdout
     
    
     
