@@ -1,6 +1,1 @@
-public class Main{
-public static void main(String args[]){
-for(int i=0;i<10;i++)
-System.out.println("hello world1");
-}
-}
+import java.util.*;public class Main{	public static void main(String args[]){	Scanner scan = new Scanner(System.in);	String s=scan.nextLine();	int i=scan.nextInt();	System.out.println("String is :"+s+" Int is: "+i);	}}
