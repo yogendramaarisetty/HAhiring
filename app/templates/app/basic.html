@@ -1,6 +1,7 @@
 {% extends "app/layout.html" %}
 
 {% block content %}
+{% if user.is_authenticated == True and  user.is_superuser == False %}
 <style>
 .ace-tm {
     background-color: #FFFFFF;
@@ -22,9 +23,38 @@ pre {
     word-wrap: normal !important;
     white-space: pre !important;
 }​
+tbody {
+    display: table-row-group;
+    vertical-align: middle;
+    border-color: inherit;
+    
+}
+.w3-table-all {
+    border: 1px solid #ccc;
+}
+.w3-table, .w3-table-all {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 40%;
+    display: table;
+    padding-left: 30px;
+    position:relative;
+    left: 3%;
+}
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+.w3-table td, .w3-table th, .w3-table-all td, .w3-table-all th {
+    padding: 8px 8px;
+}
+table { border: none; border-collapse: collapse;  }
+table td { border-left: 1px solid #000; }
+table td:first-child { border-left: none; }
+table th { border-left: 1px solid #000; }
+table th:first-child { border-left: none; }
 </style>
 
-<div class="col-md-4" style="width:50%;padding-top: 44px;padding-left: 0%;">
+<div class="col-md-4" style="width:45%;padding-top: 44px;padding-left: 0%;">
 <label>Coding Question</label>
     <pre id="editor" style=" " >
         <h2>Ali and Helping innocent people</h2>
@@ -68,9 +98,36 @@ tag of the truck is valid or not</p>
         <textarea id="output" style="width: 500px;height:100px;border-radius: 8px;" disabled ></textarea>
        </form>
        
+    <table class="w3-table-all notranslate" id="tctable">
+   <label>Test Cases</label>
+<tbody><tr style="border-bottom: solid;border-width: 2px;border-bottom-color: grey;">
+   <th>Test cases</th>
+<th>Status</th>
+</tr>
+<tr>
+<td>Testcase 1</td>
+<td id="tc1"></td>
+</tr>
+<tr>
+<td>Testcase 2</td>
+<td id="tc2"></td>
+</tr>
+<tr>
+<td>Testcase 3</td>
+<td id="tc3"></td>
+</tr>
+<tr>
+<td>Testcase 4</td>
+<td id="tc4"></td>
+</tr>
+</tbody></table>
+
+</div>
 
 
    </div>
+   
+ 
    </body>
    <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
     
@@ -82,6 +139,7 @@ tag of the truck is valid or not</p>
       e.setValue("import java.util.*;\npublic class Main{\n\tpublic static void main(String args[]){\n\tScanner scan = new Scanner(System.in);\n\tSystem.out.println();\n\t}\n}");
        $(document).ready(function() {
                 $('.loader').hide();
+                $('#tctable').hide();
               }); 
 
             function runCode(){
@@ -105,8 +163,9 @@ tag of the truck is valid or not</p>
             input: $('#input').val()
             },
             success: function(json){
+              $('.loader').hide();
             $('#output').html(json.msg);
-            $('.loader').hide();
+            
             
             }
 
@@ -122,7 +181,94 @@ tag of the truck is valid or not</p>
                $('#output').html("Don't submit empty code");
             }
             }
-        
+           function submitCode(){
+            
+           
+            if(e.getValue()!=""){
+             $('.loader').show();
+          var ajaxMins= new Date().getMinutes();
+          var ajaxSecs= new Date().getSeconds();
+          var ajaxMS=new Date().getMilliseconds();
+            $.ajax
+          ({
+            type: 'POST',
+            url: 'code1/',
+            dataType: 'json',
+            cache: false,
+            async : true,
+            data: {
+            csrfmiddlewaretoken: '{{ csrf_token }}',
+            code : e.getValue(),
+            input: $('#input').val(),
+            submit: "yes",
+            },
+            success: function(json){
+              $('.loader').hide();
+              $('#tctable').show();
+              $('#tc1').html(json.testcase1== true ? "<p color>Passed<p>" : "<p>Failed<p>");
+              $('#tc2').html(json.testcase2== true ? "<p>Passed<p>" : "<p>Failed<p>");
+              $('#tc3').html(json.testcase3== true ? "<p>Passed<p>" : "<p>Failed<p>");
+              $('#tc4').html(json.testcase4== true ? "<p>Passed<p>" : "<p>Failed<p>");
+
+              if($('#tc1').text()=="Passed"){
+                $('#tc1').css("color","white")
+                $('#tc1').css("background-color","green")
+                }
+                else
+                {
+                  $('#tc1').css("color","white")
+                $('#tc1').css("background-color","red")
+
+                }
+                 if($('#tc2').text()=="Passed"){
+                $('#tc2').css("color","white")
+                $('#tc2').css("background-color","green")
+                }
+                else
+                {
+                  $('#tc2').css("color","white")
+                $('#tc2').css("background-color","red")
+
+                }
+                 if($('#tc3').text()=="Passed"){
+                $('#tc3').css("color","white")
+                $('#tc3').css("background-color","green")
+                }
+                else
+                {
+                  $('#tc3').css("color","white")
+                $('#tc3').css("background-color","red")
+
+                }
+                 if($('#tc4').text()=="Passed"){
+                $('#tc4').css("color","white")
+                $('#tc4').css("background-color","green")
+                }
+                else
+                {
+                  $('#tc4').css("color","white")
+                $('#tc4').css("background-color","red")
+
+                }
+
+              
+             
+            
+            
+            }
+
+          }).done ( function(){
+            var ajaxMins2= new Date().getMinutes()-ajaxMins;
+          var ajaxSecs2= (new Date().getSeconds()%60)-ajaxSecs;
+          var ajaxMS2=new Date().getMilliseconds()-ajaxMS;
+
+            console.log(ajaxSecs2," seconds",);
+          });
+            }
+            else{
+               $('#output').html("Don't submit empty code");
+            }
+            }
 
         document.addEventListener('DOMContentLoaded', function () {
   var checkbox = document.querySelector('input[type="checkbox"]');
@@ -162,4 +308,18 @@ function update() {
 code.on("input", update);
 setTimeout(update, 100);
         </script>
+      
+        {% else %}
+        <head>
+        <script type="text/javascript">
+         $(document).ready(function() {
+               window.location="{% url 'login' %}";
+              }); 
+
+        </script>
+        </head>
+        
+
+
+          {% endif %}
 {% endblock %}

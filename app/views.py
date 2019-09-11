@@ -2,6 +2,7 @@
 Definition of views.
 """
 import os
+import array
 import time
 import sys
 import subprocess
@@ -46,12 +47,17 @@ def test(request):
     return render(request,'app/basic.html',{
 
     })
+
 def code1(request):
     # print ('\n******this is code1********\n')
    
     rd={}
     codet=request.POST.get("code","") #taking POST code
     inputraw=request.POST.get("input","") # taking POST Input
+    if request.POST.get("submit","")=="yes":
+        res={}
+        res=submit_code(codet)
+        return HttpResponse(json.dumps(res), content_type="application/json")
     
     # print("input is :",inputraw)
 
@@ -80,7 +86,7 @@ def execute_java(java_file, input1):
                                                                #Note: check_output command returns exceptionif compilation fails
     except:
         subprocess.Popen('javac Main.java 2> errorlog.txt', shell=True) #logging errorcommand
-        time.sleep(1) #sleep 
+        time.sleep(2) #sleep 
         f=open('errorlog.txt','r')  #writing compilation error to log file
         for i in f.readlines():   #line by line
             s+=i
@@ -99,7 +105,38 @@ def execute_java(java_file, input1):
     print(p.stdout)
     return p.stdout
     
-   
+def submit_code(code):
+    s=""
+    file=open("final_code.txt","w")
+    file.write(code)
+    arr={}
+    
+    for k in range(1,5):
+        i_n="input "+str(k)+".txt"
+        o_n="output "+str(k)+".txt"
+        i_f=open(i_n,"r")
+        o_f=open(o_n,"r")
+        arr['testcase'+str(k)]=checkstatus(code,i_f,o_f)
+        print("***************************\n",k," = ",arr['testcase'+str(k)])
+    return arr        
+
+def  checkstatus(code,inputfile,outputfile):
+    i_s=""
+    for i in inputfile.readlines():   #line by line
+            i_s+=i+'\n'
+    print("input= ",i_s)
+    str1=execute(code,i_s)
+  
+    str2=""
+    for i in outputfile.readlines():   #line by line
+            str2+=i+'\n'
+    
+    
+    print("str1= ",str1,"str2= ",str2,"***",str1==str2)
+    # print(str1==str2)
+    return str1==str2
+
+    
     
 
 

@@ -1,4 +1,4 @@
-Main.java:9: error: ';' expected
-        System.out.println("String is :"+s+" \nInt is: "+i+" "+(j+1))	
-                                                                     ^
+Main.java:7: error: class, interface, or enum expected
+}import java.util.*;
+ ^
 1 error
