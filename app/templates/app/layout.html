@@ -9,6 +9,7 @@
     <link rel="stylesheet" type="text/css" href="{% static 'app/content/site.css' %}" />
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="{% static 'app/scripts/modernizr-2.6.2.js' %}"></script>
     <script src="{% static 'app/scripts/ace.js' %}" type="text/javascript" ></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ace/1.2.8/ace.js" type="text/javascript" ></script>
@@ -21,19 +22,25 @@
 }
 </style>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-inverse navbar-fixed-top" style="
+    height: 70px;
+">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"><i class="material-icons">home</i></span>
-                    <span class="icon-bar"><i class="fa fa-home"></i></span>
+                    <span class="icon-bar">home</i></span>
+                    <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a href="/" class="navbar-brand">Host Analytics</a>
+               <a href="/" class="navbar-brand"><svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 137 134" fill="none">
+<path d="M27.8851 50.5013C34.53 32.5601 46.4908 23.9217 63.1031 21.2637V0.66452C31.8721 2.65799 11.9373 19.9347 3.96346 43.1919L27.8851 50.5013Z" fill="#5ABAFF"/>
+<path d="M25.8915 58.4752L1.30537 51.1658C-6.66851 97.6801 22.5691 135.556 70.4124 133.563C118.256 131.569 139.874 91.0352 135.532 58.4752C131.191 25.9151 107.624 1.99347 71.0769 0V21.2637C96.3275 23.9217 107.499 44.5209 108.953 58.4752C112.275 90.3707 94.9985 111.634 68.4189 112.299C37.1878 112.299 23.2335 87.0482 25.8915 58.4752Z" fill="white"/>
+<path d="M51.8066 89.7062V40.5339H60.445V60.4686C67.0899 50.5013 83.0377 53.8237 83.0377 65.1201V89.7062H75.0638L74.3993 69.107C73.7348 61.1331 64.432 59.1396 60.445 69.107V89.7062H51.8066Z" fill="white"/>
+</svg></a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li><a href="{% url 'home' %}"><i class="fa fa-home"> </i> Home</a></li>
+                    <li><a href="{% url 'home' %}"> </i> Home</a></li>
                     <li><a href="{% url 'about' %}">About</a></li>
                     <li><a href="{% url 'contact' %}">Contact</a></li>
                 </ul>

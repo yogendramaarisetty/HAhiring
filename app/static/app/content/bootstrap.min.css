@@ -6116,7 +6116,7 @@ _______________________
     font-weight: 200;
     line-height: 2.1428571435;
     color: inherit;
-    background-color: #d0d4ff;
+    background-color: #ffffff;
 }
 
 .navbar-inverse .navbar-brand {
@@ -6152,4 +6152,34 @@ _______________________
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+.navbar-inverse {
+    background-color: #082639;
+    border-color: #05133b;
+}
+.navbar-inverse .navbar-nav>li>a {
+    color: #e2e2e2;
+}
+.navbar-nav>li>a {
+    /* padding-top: 10px; */
+    /* padding-bottom: 10px; */
+    line-height: 50px;
+}
+body {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 25px;
+    line-height: 1.228571429;
+    color: #333;
+    background-color: #fff;
+}
+@media (min-width: 768px){
+.navbar>.container .navbar-brand {
+    margin-left: -95px;
+}}
+
+.navbar-brand {
+    float: left;
+    padding: 15px 15px;
+    font-size: 26px;
+    line-height: 40px;
 }
