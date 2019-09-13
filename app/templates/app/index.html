@@ -1,7 +1,6 @@
-{% extends "app/layout.html" %} {% block content %}
-
-
-
+{% extends "app/layout.html" %} {% block content %} {% url 'submittest' as my_view %} {% if request.path == my_view %}
+<h1>Your test is submitted successfully</h1>
+{% else %}
 <div class="jumbotron">
     {% load static %}
 
@@ -118,5 +117,4 @@
 
     </div>
     <script src="{% static 'app/scripts/animation.js' %}"></script>
-
-    {% endblock %}
+    {% endif %} {% endblock %}

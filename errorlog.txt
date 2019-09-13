@@ -1,4 +1,7 @@
-Main.java:7: error: class, interface, or enum expected
-}import java.util.*;
- ^
-1 error
+Main.java:6: error: <identifier> expected
+	}dskcksdbvkdkhbhk,ajbduvb
+	                 ^
+Main.java:6: error: ';' expected
+	}dskcksdbvkdkhbhk,ajbduvb
+	                         ^
+2 errors

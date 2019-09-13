@@ -1,6 +1,8 @@
 """
 Definition of views.
 """
+import xlrd
+import xlsxwriter
 import os
 import array
 import time
@@ -42,6 +44,11 @@ def codeeditor(request):
         }
     )
 
+def submittest(request):
+
+    return render(request,'app/index.html',{
+
+    })
 
 def test(request):
     return render(request,'app/basic.html',{
@@ -56,7 +63,7 @@ def code1(request):
     inputraw=request.POST.get("input","") # taking POST Input
     if request.POST.get("submit","")=="yes":
         res={}
-        res=submit_code(codet)
+        res=submit_code(codet,request.user)
         return HttpResponse(json.dumps(res), content_type="application/json")
     
     # print("input is :",inputraw)
@@ -105,7 +112,7 @@ def execute_java(java_file, input1):
     print(p.stdout)
     return p.stdout
     
-def submit_code(code):
+def submit_code(code,user):
     s=""
     file=open("final_code.txt","w")
     file.write(code)
@@ -118,6 +125,17 @@ def submit_code(code):
         o_f=open(o_n,"r")
         arr['testcase'+str(k)]=checkstatus(code,i_f,o_f)
         print("***************************\n",k," = ",arr['testcase'+str(k)])
+    score=0
+    for i in arr:
+        print(arr[i])
+        if arr[i] is True:
+            print("@@@@@ TRUE @@@@")
+            score += 10
+    workbook = xlsxwriter.Workbook('hello22.xlsx')
+    worksheet = workbook.add_worksheet()
+    worksheet.write('A1', str(user))
+    worksheet.write('B1', str(score))
+    workbook.close()
     return arr        
 
 def  checkstatus(code,inputfile,outputfile):

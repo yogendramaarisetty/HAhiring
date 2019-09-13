@@ -1,12 +1,39 @@
 {% if user.is_authenticated %}
- <link rel="stylesheet"
-          href=
-"https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <form id="logoutForm" action="/logout/" method="post" class="navbar-right">
     {% csrf_token %}
     <ul class="nav navbar-nav navbar-right">
         <li><span class="navbar-brand"><i class="fa fa-user icon">  </i>  {{ user.username }}</span></li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        {% url 'test' as my_view %} {% if request.path == my_view %}
+
+        <li><a style="
+            width: auto;
+            height: auto;
+            background-color: #d70006;
+            border-radius: 15px;
+            color: #fff8ec;
+            right: -20%;
+            line-height: 1.4;
+            align-self: center;
+            position: relative;
+            top: 8px;
+        " href="{% url 'submittest' %}">Submit Test</a></li>
+        <li>
+            <div>
+
+                <span id="myTimer" style="
+                color: white;
+                font-weight: 600;
+                font-size: 36px;
+                position: relative;
+                line-height: 1.9;
+                right: -50px;
+            ">15:00</span>
+            </div>
+        </li>
+
+        {% endif %}
     </ul>
 </form>
 
