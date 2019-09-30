@@ -1,5 +1,11 @@
 {% extends "app/layout.html" %} {% block content %} {% url 'submittest' as my_view %} {% if request.path == my_view %}
-<h1>Your test is submitted successfully</h1>
+<br /><br />
+<h1>Congratulations! <br />{{ user.username }} your test is successfully submitted</h1>
+<svg id="submit-success" width="225" height="285" viewBox="0 0 285 285" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="142.5" cy="142.5" r="137" stroke="#209E00" stroke-width="11" />
+    <path d="M65 158.5L120.5 216.5L171 142.25L221.5 68" stroke="#1AB800" stroke-width="15" />
+</svg> {% load static %}
+<script src="{% static 'app/scripts/animation.js' %}"></script>
 {% else %}
 <div class="jumbotron">
     {% load static %}
