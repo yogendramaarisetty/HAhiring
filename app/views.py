@@ -18,10 +18,8 @@ from django.http import HttpResponse
 from django.contrib.auth.models import User
 from .forms import codeForm
 from subprocess import Popen,PIPE,STDOUT
-from .models import Post
-def posts(request):
-    posts = Post.objects.all()  # Getting all the posts from database
-    return render(request, 'app/basic.html', { 'posts': posts })
+
+
 
 def home(request):
     """Renders the home page."""
@@ -34,15 +32,7 @@ def home(request):
             'year':datetime.now().year,
         }
     )
-def codeeditor(request):
-     return render(
-        request,
-        'app/codeeditor.html',
-        {
-            'title':'Code Editor',
-            'year':datetime.now().year,
-        }
-    )
+
 
 def submittest(request):
 
@@ -56,11 +46,14 @@ def test(request):
     })
 
 def code1(request):
-    # print ('\n******this is code1********\n')
-   
+ 
     rd={}
     codet=request.POST.get("code","") #taking POST code
+    # q_id=request.POST.get("question_id","")
+    q_id=1
+    lang=request.POST.get("language_id","")
     inputraw=request.POST.get("input","") # taking POST Input
+    print(lang," ",inputraw)
     if request.POST.get("submit","")=="yes":
         res={}
         res=submit_code(codet,request.user)
@@ -68,49 +61,59 @@ def code1(request):
     
     # print("input is :",inputraw)
 
-    output=execute(codet,inputraw) #storing out put value of successfully executed code
+    output=execute(codet,inputraw,q_id,lang) #storing out put value of successfully executed code
     rd['result']="successfull"
     rd['msg']=output
     # print('recieved code is \n"',codet,'\n and output is\n',output)
     return HttpResponse(json.dumps(rd), content_type="application/json")#sending json response
 
-def execute(code_text,input):
-
-    filename_code=open('Main.java','w+') #creating Main.java file
+def execute(code_text,input,q_id,lang):
+    language={"Java" : "Main.java","C" : "main.c","C++" :"main.cpp"}
+    
+    filename_code=open(language[lang],'w+') #creating Main.java file
+    
+    
     filename_code.flush() #flushing file
     f1 = code_text.split("\n") #splitting code
     for i in f1:
         filename_code.write(i+"\n")  #writing code line by line into file
     filename_code.close() #closing java file
-    # time.sleep(0.05)                 #waiting to get the file ready
-    # execute_java(filename_code,input) 
-    return(execute_java(filename_code,input))
+    # time.sleea(filename_code,input) 
+    return(execute_java(filename_code,input,q_id,lang))
 
-def execute_java(java_file, input1):
+def execute_java(java_file, input1,q_id,lang):
     s=""
-    try:
-        subprocess.check_output('javac Main.java', shell=True) #compiling and checking compile output 
-                                                               #Note: check_output command returns exceptionif compilation fails
-    except:
-        subprocess.Popen('javac Main.java 2> errorlog.txt', shell=True) #logging errorcommand
-        time.sleep(2) #sleep 
-        f=open('errorlog.txt','r')  #writing compilation error to log file
-        for i in f.readlines():   #line by line
-            s+=i
-        
-        # print("#####\n",s,"\n#####")
+    language_compile={"Java" : "javac Main.java","C" : "gcc main.c","C++" :"g++ main.cpp"}
+    language_run={"Java" : "java Main","C" : "a","C++" :"a"}
+    temp=subprocess.Popen(language_compile[lang],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    var=temp.stderr.readlines()
+    if len(var)==0:
+         p=run(language_run[lang], stdout=PIPE,input=input1, encoding='ascii')
+         print(p.stdout)
+         return p.stdout
+    else:
+        for i in var:
+            s+=i.decode("utf-8")
+        print(s)
         return s
-    cmd = ['java ', 'Main']
-    # if input1 == "":                                             #cheching weather input is emptyu or not
-    #    proc = Popen(cmd, stdin=PIPE, stdout=PIPE, stderr=STDOUT) #Running java class file
-    #    stdout,stderr = proc.communicate() #taking standard output
-    #    stdoutstr= str(stdout,'utf-8')  #converting binary output to String
-    #    return stdoutstr
-    # else :
-    #     # print("%%%%%===",input1)
-    p = run(cmd, stdout=PIPE,input=input1, encoding='ascii') #passing input to run command
-    print(p.stdout)
-    return p.stdout
+
+
+    # try:
+    #     subprocess.check_output('javac Main.java', shell=True) #compiling and checking compile output 
+    #                                                            #Note: check_output command returns exceptionif compilation fails
+    # except:
+    #     subprocess.Popen('javac Main.java 2> errorlog.txt', shell=True) #logging errorcommand
+    #     time.sleep(2) #sleep 
+    #     f=open('errorlog.txt','r')  #writing compilation error to log file
+    #     for i in f.readlines():   #line by line
+    #         s+=i
+        
+    #     # print("#####\n",s,"\n#####")
+    #     return s
+    # cmd =[ 'java ', 'Main']
+    # p = run(cmd, stdout=PIPE,input=input1, encoding='ascii') #passing input to run command
+    # print(p.stdout)
+    # return p.stdout
     
 def submit_code(code,user):
     s=""
@@ -131,7 +134,7 @@ def submit_code(code,user):
         if arr[i] is True:
             print("@@@@@ TRUE @@@@")
             score += 10
-    workbook = xlsxwriter.Workbook('hello22.xlsx')
+    workbook = xlsxwriter.Workbook('results.xlsx')
     worksheet = workbook.add_worksheet()
     worksheet.write('A1', str(user))
     worksheet.write('B1', str(score))

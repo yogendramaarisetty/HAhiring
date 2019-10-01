@@ -3,7 +3,10 @@
 <form id="logoutForm" action="/logout/" method="post" class="navbar-right">
     {% csrf_token %}
     <ul class="nav navbar-nav navbar-right">
-        <li><span class="navbar-brand"><i class="fa fa-user icon">  </i>  {{ user.username }}</span></li>
+        <li><span class="navbar-brand" style="
+            line-height: 2.2;
+            font-size: 18px;
+        "><i class="fa fa-user icon">  </i>  {{ user.username }}</span></li>
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         {% url 'test' as my_view %} {% if request.path == my_view %}
 
@@ -14,7 +17,7 @@
             border-radius: 15px;
             color: #fff8ec;
             right: 0%;
-            line-height: 1.4;
+            line-height: 1.0;
             align-self: center;
             position: relative;
             top: 8px;
@@ -40,7 +43,7 @@
 {% else %}
 
 <ul class="nav navbar-nav navbar-right">
-    <li><a href="{% url 'login' %}">Log in</a></li>
+    <li><a style="padding-right: 150px;" href="{% url 'login' %}">LOG IN</a></li>
 </ul>
 
 {% endif %}
