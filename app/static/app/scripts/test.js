@@ -2,33 +2,30 @@ var lang = "Java"
 var e = ace.edit("code")
 e.getSession().setMode("ace/mode/java");
 e.setFontSize("15px");
-e.setValue("//Write your Java Code below\n\nimport java.util.*;\npublic class Main{\n\tpublic static void main(String args[]){\n\tScanner scan = new Scanner(System.in);\n\tSystem.out.println();\n\t}\n}");
+
+function java_default() {
+    e.setValue("//Write your Java Code below\n//NOTE:Public Class Must be Main\n\nimport java.util.*;\npublic class Main{\n\tpublic static void main(String args[]){\n\tScanner scan = new Scanner(System.in);\n\tSystem.out.println();\n\t}\n}");
+}
 $(document).ready(function() {
+    java_default();
     $('.loader').hide();
     $('#tctable').hide();
+
+
 });
 
+if ($("#myTimer").text() == "00:00") {
+    submitCode();
 
-function selectLang() {
-    lang = document.getElementById("language").value;
-
-    if (lang == "Java") {
-        e.getSession().setMode("ace/mode/java");
-        e.setFontSize("15px");
-        e.setValue("//Write your Java Code below\n\n import java.util.*;\npublic class Main{\n\tpublic static void main(String args[]){\n\tScanner scan = new Scanner(System.in);\n\tSystem.out.println();\n\t}\n}");
-
-    }
-    if (lang == "C") {
-        e.getSession().setMode("ace/mode/c_cpp");
-        e.setFontSize("15px");
-        e.setValue("//Write your C code Below\n\n #include <stdio.h>\n\nint main(){\n printf();\n}");
-    }
-    if (lang == "C++") {
-        e.getSession().setMode("ace/mode/c_cpp");
-        e.setFontSize("15px");
-        e.setValue("//Write your C++ code below\n\n#include<iostream>\n using namespace std;\n int main(){\ncout<<;\n}");
-    }
 }
+if ($("#myTimer").text() == "59:55") {
+    alert("timer logged");
+    submitCode();
+
+}
+
+
+
 
 
 function runCode() {
@@ -103,11 +100,11 @@ function submitCode() {
                 $('#tc4').html(json.testcase4 == true ? pass : fail);
 
                 if ($('#tc1').text() == "Passed") {
-                    $('#tc1').css("color", "white")
-                    $('#tc1').css("background-color", "green")
+                    $('#tc1').css("color", "green")
+                    $('#tc1').css("background-color", "white")
                 } else {
-                    $('#tc1').css("color", "white")
-                    $('#tc1').css("background-color", "red")
+                    $('#tc1').css("color", "red")
+                    $('#tc1').css("background-color", "white")
 
                 }
                 if ($('#tc2').text() == "Passed") {
@@ -119,11 +116,11 @@ function submitCode() {
 
                 }
                 if ($('#tc3').text() == "Passed") {
-                    $('#tc3').css("color", "white")
-                    $('#tc3').css("background-color", "green")
+                    $('#tc3').css("color", "white");
+                    $('#tc3').css("background-color", "green");
                 } else {
-                    $('#tc3').css("color", "white")
-                    $('#tc3').css("background-color", "red")
+                    $('#tc3').css("color", "Red");
+                    $('#tc3').css("font-size", "20px")
 
                 }
                 if ($('#tc4').text() == "Passed") {
@@ -188,10 +185,13 @@ function update() {
         code.renderer.scroller.appendChild(node);
     }
 }
+
 code.on("input", update);
 setTimeout(update, 100);
 
 function startTimer(duration, display) {
+
+
     var start = Date.now(),
         diff,
         minutes,
@@ -232,3 +232,52 @@ window.onload = function() {
         display = document.querySelector('#myTimer');
     startTimer(fiveMinutes, display);
 };
+
+// Set the date we're counting down to
+window.onload = function() {
+    var dt = new Date();
+    dt.setMinutes(dt.getMinutes() + 60);
+
+
+    var countDownDate = new Date(dt).getTime();
+
+    // Update the count down every 1 second
+    var x = setInterval(function() {
+
+        // Get today's date and time
+        var now = new Date().getTime();
+
+
+        // Find the distance between now and the count down date
+        var distance = countDownDate - now;
+
+        // Time calculations for days, hours, minutes and seconds
+        var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        // Output the result in an element with id="demo"
+        document.getElementById("myTimer1").innerHTML = +minutes + " : " + seconds + " ";
+        if (minutes == 0) {
+            if (seconds == 15) {
+                document.getElementById("myTimer1").innerHTML = +minutes + " TIMEUP: " + seconds + " ";
+                submitCode();
+
+
+            }
+        }
+        if (minutes == 0) {
+            if (seconds == 0) {
+
+                document.getElementById('submitTest').click();
+            }
+        }
+        // If the count down is over, write some text 
+        if (distance < 0) {
+            clearInterval(x);
+            document.getElementById("myTimer1").innerHTML = "EXPIRED";
+            document.getElementById('submitTest').click();
+        }
+    }, 1000);
+}

@@ -10,29 +10,27 @@
         <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
         {% url 'test' as my_view %} {% if request.path == my_view %}
 
-        <li><a style="
-            width: auto;
+        <li><a id="submitTest" class="submit_test" style=" width: auto;
             height: auto;
             background-color: #d70006;
             border-radius: 15px;
             color: #fff8ec;
             right: 0%;
-            line-height: 1.0;
+            line-height: 0.3;
             align-self: center;
             position: relative;
-            top: 8px;
-        " href="{% url 'submittest' %}">Submit Test</a></li>
+            top: 8px;" href="{% url 'submittest' %}">Submit Test</a></li>
         <li>
             <div>
 
-                <span id="myTimer" style="
+                <span id="myTimer1" style="
                 color: white;
                 font-weight: 600;
                 font-size: 24px;
                 position: relative;
                 line-height: 2.7;
                 right: -10px;
-            ">15:00</span>
+            "></span>
             </div>
         </li>
 

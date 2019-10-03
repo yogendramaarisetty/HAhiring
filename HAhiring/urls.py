@@ -17,6 +17,7 @@ urlpatterns = [
     path('about/', views.about, name='about'),
     path('submittest/',views.submittest, name='submittest'),
     path('test/code1/',views.code1, name='code1'),
+    path('test/q1/',views.set_question, name='set_question'),
     path('test/',views.test, name='test'),
     path('login/',
          LoginView.as_view
