@@ -7524,3 +7524,8 @@ _______________________
         font-weight: 700;
         box-shadow: inset 0px 0px 5px 0px #3b7607, 0 0 2px 0px #05710e;
     }
+    
+    h3 {
+        font-size: 20px;
+        color: #c10000;
+    }

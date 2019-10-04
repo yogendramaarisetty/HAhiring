@@ -115,6 +115,9 @@
 <script src="https://code.jquery.com/jquery-1.9.1.min.js"></script>
 <script src="{% static 'app/scripts/test.js' %}"></script>
 <script type="text/javascript">
+    window.onhashchange = function() {
+        alert("do u want to redirect"); //code  
+    }
     var lang = "Java"
     var q_id = "q1";
     lang = document.getElementById("language").value;
@@ -181,7 +184,9 @@
         }
     }
     document.getElementById("q1").onclick = function() {
+
         var c_s = confirm("Please Submit Code before moving to next question\nWarning: YOUR CODE WILL NOT BE SAVED\n ");
+        $('#tctable').hide();
         if (c_s == true) {
             set_question("question1");
             q_id = "q1";
@@ -194,6 +199,7 @@
     }
     document.getElementById("q2").onclick = function() {
         var c_s = confirm("Please Submit Code before moving to next question\nWarning: YOUR CODE WILL NOT BE SAVED\n ");
+        $('#tctable').hide();
         if (c_s == true) {
             set_question("question2");
             q_id = "q2";
@@ -206,6 +212,7 @@
     }
     document.getElementById("q3").onclick = function() {
         var c_s = confirm("Please Submit Code before moving to next question\nWarning: YOUR CODE WILL NOT BE SAVED\n ");
+        $('#tctable').hide();
         if (c_s == true) {
             set_question("question3");
             q_id = "q3";
@@ -218,6 +225,7 @@
     }
     document.getElementById("q4").onclick = function() {
         var c_s = confirm("Please Submit Code before moving to next question\nWarning: YOUR CODE WILL NOT BE SAVED\n ");
+        $('#tctable').hide();
         if (c_s == true) {
             set_question("question4");
             q_id = "q4";
@@ -230,6 +238,7 @@
     }
     document.getElementById("q5").onclick = function() {
         var c_s = confirm("Please Submit Code before moving to next question\nWarning: YOUR CODE WILL NOT BE SAVED\n ");
+        $('#tctable').hide();
         if (c_s == true) {
             set_question("question5");
             q_id = "q5";
