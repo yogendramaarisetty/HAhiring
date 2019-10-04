@@ -10,6 +10,7 @@ $(document).ready(function() {
     java_default();
     $('.loader').hide();
     $('#tctable').hide();
+    $('#submit_warn').hide();
 
 
 });

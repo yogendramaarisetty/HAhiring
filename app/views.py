@@ -2,6 +2,7 @@
 Definition of views.
 """
 import xlrd
+import smtplib
 import xlsxwriter
 import os
 import array
@@ -133,17 +134,23 @@ def submit_code(code,user,q_id,lang):
     ques={"q1":1,"q2":2,"q3":3,"q4":4,"q5":5}
     worksheet = workbook.get_sheet(0)
     worksheet.write(1,1, str(user))
+    tc_p=0
+    tc=0
     for i in arr:
         print(arr[i])
         if arr[i] is True:
             print("@@@@@ TRUE @@@@")
             score += 10
+            tc_p=tc_p+1
+        tc+=1
     
     q_cell= ques[q_id]
-    score_cell= ques[q_id]  
-    worksheet.write(q_cell,2, q_id)
-    worksheet.write(score_cell,2, score)
-    
+    tc_ps=str(tc_p)
+    tc_s=str(tc)
+    msg=""
+    subject=str(user)+"'s SCORE"
+    msg+="Score for "+q_id+" is :"+str(score)+"\n"+tc_ps+" out of "+tc_s+" PASSED\n"+"LANGUAGE: "+lang+"\nSUBMITTED CODE:\n"+code
+    send_email(subject,msg)
     return arr        
 
 def  checkstatus(code,inputfile,outputfile,q_id,lang):
@@ -159,11 +166,23 @@ def  checkstatus(code,inputfile,outputfile,q_id,lang):
             str2+=i
     
     stro=str1.replace(str2,"")
-    print("diff=",stro,str1==str2)
-    print("str1= ",str1,"str2= ",str2,"***",str1==str2)
+    # print("diff=",stro,str1==str2)
+    # print("str1= ",str1,"str2= ",str2,"***",str1==str2)
     # print(str1==str2)
     return str1==str2
-
+def send_email(subject, msg):
+    to="167r1a05m4@gmail.com"
+    try:
+        server = smtplib.SMTP('smtp.gmail.com:587')
+        server.ehlo()
+        server.starttls()
+        server.login("yogendramaarisetty@gmail.com", "yyyooogggiii1")
+        message = 'Subject: {}\n\n{}'.format(subject, msg)
+        server.sendmail("yogendramaarisetty@gmail.com", to, message)
+        server.quit()
+        print("Success: Email sent!")
+    except:
+        print("Email failed to send.")
     
     
 

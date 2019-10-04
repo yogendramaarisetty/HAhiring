@@ -79,6 +79,7 @@
         <label>Output</label><br />
         <textarea id="output" style="width: 400px;height:80px;border-radius: 8px;" disabled></textarea>
         </form>
+        <p id="submit_warn">SORRY! YOU tried to suubmit More than 3 times.</p>
 
         <table class="w3-table-all notranslate" id="tctable">
             <label>Test Cases</label>
@@ -123,6 +124,7 @@
     lang = document.getElementById("language").value;
     var resp = ""
     $(document).ready(function() {
+        $('#submit_warn').hide();
         set_question("question1");
         q_id = "q1"
     });
@@ -184,7 +186,10 @@
         }
     }
     document.getElementById("q1").onclick = function() {
-
+        if (submit_count["q1"] < 4) {
+            $('#submit_warn').hide();
+            document.getElementById("sbmitbtn").disabled = false;
+        }
         var c_s = confirm("Please Submit Code before moving to next question\nWarning: YOUR CODE WILL NOT BE SAVED\n ");
         $('#tctable').hide();
         if (c_s == true) {
@@ -198,6 +203,10 @@
         }
     }
     document.getElementById("q2").onclick = function() {
+        if (submit_count["q2"] < 4) {
+            $('#submit_warn').hide();
+            document.getElementById("sbmitbtn").disabled = false;
+        }
         var c_s = confirm("Please Submit Code before moving to next question\nWarning: YOUR CODE WILL NOT BE SAVED\n ");
         $('#tctable').hide();
         if (c_s == true) {
@@ -211,6 +220,10 @@
         }
     }
     document.getElementById("q3").onclick = function() {
+        if (submit_count["q3"] < 4) {
+            $('#submit_warn').hide();
+            document.getElementById("sbmitbtn").disabled = false;
+        }
         var c_s = confirm("Please Submit Code before moving to next question\nWarning: YOUR CODE WILL NOT BE SAVED\n ");
         $('#tctable').hide();
         if (c_s == true) {
@@ -224,6 +237,10 @@
         }
     }
     document.getElementById("q4").onclick = function() {
+        if (submit_count["q4"] < 4) {
+            $('#submit_warn').hide();
+            document.getElementById("sbmitbtn").disabled = false;
+        }
         var c_s = confirm("Please Submit Code before moving to next question\nWarning: YOUR CODE WILL NOT BE SAVED\n ");
         $('#tctable').hide();
         if (c_s == true) {
@@ -237,6 +254,10 @@
         }
     }
     document.getElementById("q5").onclick = function() {
+        if (submit_count["q5"] < 4) {
+            $('#submit_warn').hide();
+            document.getElementById("sbmitbtn").disabled = false;
+        }
         var c_s = confirm("Please Submit Code before moving to next question\nWarning: YOUR CODE WILL NOT BE SAVED\n ");
         $('#tctable').hide();
         if (c_s == true) {
@@ -257,6 +278,12 @@
     var default_c = "//Write your C code Below\n\n #include <stdio.h>\n\nint main(){\n printf();\n}";
     var default_cpp = "//Write your C++ code below\n\n#include<iostream>\n using namespace std;\n int main(){\ncout<<;\n}";
     var lang = document.getElementById("language").value;
+    var submit_count = {};
+    submit_count["q1"] = 1;
+    submit_count["q2"] = 1;
+    submit_count["q3"] = 1;
+    submit_count["q4"] = 1;
+    submit_count["q5"] = 1;
 
 
 
@@ -300,120 +327,130 @@
         }
     }
     var a = {};
+    a["q1"] = "";
+    a["q2"] = "";
+    a["q3"] = "";
+    a["q4"] = "";
+    a["q5"] = "";
+
 
     function submitCode() {
-        if (q_id == "q1") {
-            q1_code = e.getValue();
-        }
-        if (q_id == "q2") {
-            q2_code = e.getValue();
-        }
-        if (q_id == "q3") {
-            q3_code = e.getValue();
-        }
-        if (q_id == "q4") {
-            q4_code = e.getValue();
-        }
-        if (q_id == "q5") {
-            q5_code = e.getValue();
-        }
-        a["q1"] = q1_code;
-        a["q2"] = q2_code;
-        a["q3"] = q3_code;
-        a["q4"] = q4_code;
-        a["q5"] = q5_code;
-        e.setValue(e.getValue());
-        if (e.getValue() != "") {
+        if (submit_count[q_id] < 4) {
+            submit_count[q_id] += 1;
+            if (q_id == "q1") {
+                q1_code = e.getValue();
+            }
+            if (q_id == "q2") {
+                q2_code = e.getValue();
+            }
+            if (q_id == "q3") {
+                q3_code = e.getValue();
+            }
+            if (q_id == "q4") {
+                q4_code = e.getValue();
+            }
+            if (q_id == "q5") {
+                q5_code = e.getValue();
+            }
+            a["q1"] = q1_code;
+            a["q2"] = q2_code;
+            a["q3"] = q3_code;
+            a["q4"] = q4_code;
+            a["q5"] = q5_code;
+            e.setValue(e.getValue());
+            if (e.getValue() != "") {
 
-            $('.loader').show();
-            var ajaxMins = new Date().getMinutes();
-            var ajaxSecs = new Date().getSeconds();
-            var ajaxMS = new Date().getMilliseconds();
-            $.ajax({
-                type: 'POST',
-                url: 'code1/',
-                dataType: 'json',
-                cache: false,
-                async: true,
-                data: {
-                    csrfmiddlewaretoken: '{{ csrf_token }}',
-                    code: e.getValue(),
-                    input: $('#input').val(),
-                    submit: "yes",
-                    language_id: document.getElementById("language").value,
-                    question_id: q_id,
+                $('.loader').show();
+                var ajaxMins = new Date().getMinutes();
+                var ajaxSecs = new Date().getSeconds();
+                var ajaxMS = new Date().getMilliseconds();
+                $.ajax({
+                    type: 'POST',
+                    url: 'code1/',
+                    dataType: 'json',
+                    cache: false,
+                    async: true,
+                    data: {
+                        csrfmiddlewaretoken: '{{ csrf_token }}',
+                        code: e.getValue(),
+                        input: $('#input').val(),
+                        submit: "yes",
+                        language_id: document.getElementById("language").value,
+                        question_id: q_id,
 
-                },
-                success: function(json) {
-                    $('.loader').hide();
-                    $('#tctable').show();
-                    var pass = "<p color>Passed<p>";
-                    var fail = "<p>Failed <p>";
-                    $('#tc1').html(json.testcase1 == true ? pass : fail);
-                    $('#tc2').html(json.testcase2 == true ? pass : fail);
-                    $('#tc3').html(json.testcase3 == true ? pass : fail);
-                    $('#tc4').html(json.testcase4 == true ? pass : fail);
+                    },
+                    success: function(json) {
+                        $('.loader').hide();
+                        $('#tctable').show();
+                        var pass = "<p color>Passed<p>";
+                        var fail = "<p>Failed <p>";
+                        $('#tc1').html(json.testcase1 == true ? pass : fail);
+                        $('#tc2').html(json.testcase2 == true ? pass : fail);
+                        $('#tc3').html(json.testcase3 == true ? pass : fail);
+                        $('#tc4').html(json.testcase4 == true ? pass : fail);
 
 
-                    if ($('#tc1').text() == "Passed") {
-                        $('#tc1').css("color", "green")
-                        $('#tc1').css("font-weight", "600")
-                        $('#tc1').css("font-size", "20px")
-                        $('#tc1').css("background-color", "white")
-                    } else {
-                        $('#tc1').css("color", "red")
-                        $('#tc1').css("font-weight", "600")
-                        $('#tc1').css("font-size", "20px")
-                        $('#tc1').css("background-color", "white")
+                        if ($('#tc1').text() == "Passed") {
+                            $('#tc1').css("color", "green")
+                            $('#tc1').css("font-weight", "600")
+                            $('#tc1').css("font-size", "20px")
+                            $('#tc1').css("background-color", "white")
+                        } else {
+                            $('#tc1').css("color", "red")
+                            $('#tc1').css("font-weight", "600")
+                            $('#tc1').css("font-size", "20px")
+                            $('#tc1').css("background-color", "white")
+
+                        }
+                        if ($('#tc2').text() == "Passed") {
+                            $('#tc2').css("color", "green")
+                            $('#tc2').css("font-weight", "600")
+                            $('#tc2').css("font-size", "20px")
+                            $('#tc2').css("background-color", "white")
+                        } else {
+                            $('#tc2').css("color", "red")
+                            $('#tc2').css("font-weight", "600")
+                            $('#tc2').css("font-size", "20px")
+                            $('#tc2').css("background-color", "white")
+
+                        }
+                        if ($('#tc3').text() == "Passed") {
+                            $('#tc3').css("color", "green")
+                            $('#tc3').css("font-weight", "600")
+                            $('#tc3').css("font-size", "20px")
+                            $('#tc3').css("background-color", "white")
+                        } else {
+                            $('#tc3').css("color", "red")
+                            $('#tc3').css("font-weight", "600")
+                            $('#tc3').css("font-size", "20px")
+                            $('#tc3').css("background-color", "white")
+
+                        }
+                        if ($('#tc4').text() == "Passed") {
+                            $('#tc4').css("color", "green")
+                            $('#tc4').css("font-weight", "600")
+                            $('#tc4').css("font-size", "20px")
+                            $('#tc4').css("background-color", "white")
+                        } else {
+                            $('#tc4').css("color", "red")
+                            $('#tc4').css("font-weight", "600")
+                            $('#tc4').css("font-size", "20px")
+                            $('#tc4').css("background-color", "white")
+
+                        }
+
+
+
 
                     }
-                    if ($('#tc2').text() == "Passed") {
-                        $('#tc2').css("color", "green")
-                        $('#tc2').css("font-weight", "600")
-                        $('#tc2').css("font-size", "20px")
-                        $('#tc2').css("background-color", "white")
-                    } else {
-                        $('#tc2').css("color", "red")
-                        $('#tc2').css("font-weight", "600")
-                        $('#tc2').css("font-size", "20px")
-                        $('#tc2').css("background-color", "white")
 
-                    }
-                    if ($('#tc3').text() == "Passed") {
-                        $('#tc3').css("color", "green")
-                        $('#tc3').css("font-weight", "600")
-                        $('#tc3').css("font-size", "20px")
-                        $('#tc3').css("background-color", "white")
-                    } else {
-                        $('#tc3').css("color", "red")
-                        $('#tc3').css("font-weight", "600")
-                        $('#tc3').css("font-size", "20px")
-                        $('#tc3').css("background-color", "white")
-
-                    }
-                    if ($('#tc4').text() == "Passed") {
-                        $('#tc4').css("color", "green")
-                        $('#tc4').css("font-weight", "600")
-                        $('#tc4').css("font-size", "20px")
-                        $('#tc4').css("background-color", "white")
-                    } else {
-                        $('#tc4').css("color", "red")
-                        $('#tc4').css("font-weight", "600")
-                        $('#tc4').css("font-size", "20px")
-                        $('#tc4').css("background-color", "white")
-
-                    }
-
-
-
-
-                }
-
-            })
+                })
+            }
+        } else {
+            document.getElementById("sbmitbtn").disabled = true;
+            $('#submit_warn').show();
         }
     }
-
-
 
     function selectLang() {
         lang = document.getElementById("language").value;
@@ -421,6 +458,7 @@
         if (lang == "Java") {
             e.getSession().setMode("ace/mode/java");
             e.setFontSize("15px");
+            e.setValue(default_java);
             console.log(a[q_id]);
             if (a[q_id] == "")
                 e.setValue(default_java);
@@ -432,6 +470,7 @@
         if (lang == "C") {
             e.getSession().setMode("ace/mode/c_cpp");
             e.setFontSize("15px");
+            e.setValue(default_c);
             if (a[q_id] == "")
                 e.setValue(default_c);
             else
@@ -440,6 +479,7 @@
         if (lang == "C++") {
             e.getSession().setMode("ace/mode/c_cpp");
             e.setFontSize("15px");
+            e.setValue(default_cpp);
             if (a[q_id] == "")
                 e.setValue(default_cpp);
             else
