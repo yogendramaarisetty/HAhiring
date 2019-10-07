@@ -72,7 +72,7 @@ def code1(request):
         return HttpResponse(json.dumps(res), content_type="application/json")
     
     # print("input is :",inputraw)
-
+    lang=request.POST.get("language_id","")
     output=execute(codet,inputraw,q_id,lang) #storing out put value of successfully executed code
     rd['result']="successfull"
     rd['msg']=output
@@ -82,6 +82,7 @@ def code1(request):
 def execute(code_text,input,q_id,lang):
     language={"Java" : "Main.java","C" : "main.c","C++" :"main.cpp"}
     print("&&&&&&&",lang)
+    
     filename_code=open(language[lang],'w+') #creating Main.java file
     
     
@@ -97,10 +98,10 @@ def execute_java(java_file, input1,q_id,lang):
     s=""
     language_compile={"Java" : "javac Main.java","C" : "gcc main.c","C++" :"g++ main.cpp"}
     language_run={"Java" : "java Main","C" : "a","C++" :"a"}
-    temp=subprocess.Popen(language_compile[lang],stdout=subprocess.PIPE,stderr=subprocess.PIPE)
+    temp=subprocess.Popen(language_compile[lang],stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
     var=temp.stderr.readlines()
     if len(var)==0:
-         p=run(language_run[lang], stdout=PIPE,input=input1, encoding='ascii')
+         p=subprocess.run(language_run[lang], stdout=PIPE,input="", stderr=subprocess.PIPE,encoding='ascii',shell=True)
          print(p.stdout)
          return p.stdout
     else:
