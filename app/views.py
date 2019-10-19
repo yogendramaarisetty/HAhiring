@@ -101,7 +101,7 @@ def execute_java(java_file, input1,q_id,lang):
     temp=subprocess.Popen(language_compile[lang],stdout=subprocess.PIPE,stderr=subprocess.PIPE,shell=True)
     var=temp.stderr.readlines()
     if len(var)==0:
-         p=subprocess.run(language_run[lang], stdout=PIPE,input="", stderr=subprocess.PIPE,encoding='ascii',shell=True)
+         p=subprocess.run(language_run[lang], stdout=PIPE,input=input1, stderr=subprocess.PIPE,encoding='ascii',shell=True)
          print(p.stdout)
          return p.stdout
     else:
